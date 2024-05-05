@@ -103,14 +103,7 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
         val outStr = boardTuples.map(x => if x._1 == '1' then "x" else (if x._2 == '1' then "O" else "-")).mkString
         outStr.reverse.grouped(boardLength).map(_+"\n").mkString
     }
-
-    /**
-     * @param str The base string
-     * @param desiredNumDigits The number of digits in the resulting string
-     * @return A binary string of length desiredNumDigits
-     */
-    private def padBinaryString(str: String, desiredNumDigits: Int) = ("0" * (desiredNumDigits - str.length)) + str
-
+    
     /**
      *
      * @param readableValue The human readable value of the board, ie. 1-boardSize
@@ -127,3 +120,10 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
         "7 8 9\n"
     }
 }
+
+/**
+ * @param str              The base string
+ * @param desiredNumDigits The number of digits in the resulting string
+ * @return A binary string of length desiredNumDigits
+ */
+private def padBinaryString(str: String, desiredNumDigits: Int) = ("0" * (desiredNumDigits - str.length)) + str

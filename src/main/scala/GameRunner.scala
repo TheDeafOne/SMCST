@@ -5,7 +5,8 @@ import scala.util.control.Breaks.break
 @main
 def run = {
 //    runGame(humanMove, humanMove, verbose = true, TicTacToeBoard())
-    runGame(humanMove, randomMove, verbose = true, TicTacToeBoard())
+//    runGame(humanMove, randomMove, verbose = true, TicTacToeBoard())
+    runGame(humanMove, greedyTTTMove, verbose = true, TicTacToeBoard())
 
 }
 
