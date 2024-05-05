@@ -16,21 +16,52 @@ def randomMove(gameBoard: TwoPlayerGame): Int  = {
 
 /**
  * Greedy Implementation of a TicTacToe AI
+ * @param heuristic the function which takes a TicTacToeBoard and scores it
  * @param gameBoard A TicTacToeBoard, If not will return -1 because it can't play another game
  * @return the move the greedy algo thinks is best
  */
-def greedyTTTMove(gameBoard: TwoPlayerGame): Int = {
+def greedyTTTMove(heuristic: TicTacToeBoard => Int = getScoringTTTBHeuristic)(gameBoard: TwoPlayerGame): Int = {
     if(!gameBoard.isInstanceOf[TicTacToeBoard]){
-        -1
+        return -1
     }
-    else{
-        val board = gameBoard.asInstanceOf[TicTacToeBoard]
-        val playerCoeff = if(gameBoard.getNextPlayer) then 1 else -1
-        gameBoard.getValidMoves.map(move => (move, getTTTBHeuristic(gameBoard.makeMove(move).asInstanceOf[TicTacToeBoard]))).maxBy(_._2*playerCoeff)._1
-    }
+
+    val board = gameBoard.asInstanceOf[TicTacToeBoard]
+    val playerCoeff = if(gameBoard.getNextPlayer) then 1 else -1
+    gameBoard.getValidMoves.map(move => (move, heuristic(gameBoard.makeMove(move).asInstanceOf[TicTacToeBoard]))).maxBy(_._2*playerCoeff)._1
 }
 
-def getTTTBHeuristic(gameBoard: TicTacToeBoard): Int = {
+
+/**
+ * Minimax Implementation of a TicTacToe AI
+ * @param depth the depth which the AI will search
+ * @param heuristic the function which takes a TicTacToeBoard and scores it
+ * @param gameBoard A TicTacToeBoard, If not will return -1 because it can't play another game
+ * @return the move the algo thinks is best
+ */
+def minimaxTTTMove(depth: Int, heuristic: TicTacToeBoard => Int = getScoringTTTBHeuristic)(gameBoard: TwoPlayerGame): Int = {
+    if (!gameBoard.isInstanceOf[TicTacToeBoard]) {
+        return -1
+    }
+    val playerCoeff = if (gameBoard.getNextPlayer) then 1 else -1
+
+    def minimaxSearch(d: Int, boardState: TicTacToeBoard): Int = {
+        if(d == 0 || boardState.hasWinner.isDefined) {
+            return heuristic(boardState)
+        }
+        val localPlayerCoeff = if (boardState.getNextPlayer) then 1 else -1
+        boardState.getValidMoves.map(move => (move, minimaxSearch(d - 1, boardState.makeMove(move)))).maxBy(_._2 * localPlayerCoeff)._2
+    }
+    gameBoard.getValidMoves.map(move => (move, minimaxSearch(depth, gameBoard.makeMove(move).asInstanceOf[TicTacToeBoard]))).maxBy(_._2 * playerCoeff)._1
+}
+
+
+/**
+ * Scores the board based on how close to a 3 in a row it is for either player
+ * @param gameBoard a TicTacToeBoard
+ * @return a Int representing how close it is to either player winning, More negative is more in favor of player 2, positive, player 1
+ */
+
+def getScoringTTTBHeuristic(gameBoard: TicTacToeBoard): Int = {
     val p1Binary = padBinaryString(gameBoard.player1Pieces.toBinaryString, gameBoard.boardSize).toList
     val p2Binary = padBinaryString(gameBoard.player2Pieces.toBinaryString, gameBoard.boardSize).toList
     val boardString = p1Binary.zip(p2Binary).map(x => if (x._2 == '1') then "2" else x._1).mkString.reverse
