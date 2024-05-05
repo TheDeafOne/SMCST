@@ -126,14 +126,4 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
         "4 5 6\n" +
         "7 8 9\n"
     }
-
-
-}
-
-
-def humanMove(gameBoard: TwoPlayerGame): Int  = {
-    println(s"Current Board: Player ${if gameBoard.getNextPlayer then 'X' else 'O'}")
-    println(gameBoard.toString)
-    println("Enter your move on the board, or -1 to quit")
-    getIntegerInput
 }

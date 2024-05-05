@@ -4,7 +4,9 @@ import scala.util.control.Breaks.break
 
 @main
 def run = {
-    runGame(humanMove, humanMove, verbose = true, TicTacToeBoard())
+//    runGame(humanMove, humanMove, verbose = true, TicTacToeBoard())
+    runGame(humanMove, randomMove, verbose = true, TicTacToeBoard())
+
 }
 
 def runGame(player1Algo: TwoPlayerGame => Int, player2Algo: TwoPlayerGame => Int, verbose: Boolean = false, startingBoard: TwoPlayerGame): Int = {
@@ -93,6 +95,12 @@ trait TwoPlayerGame {
      * @return a string describing how to play the game
      */
     def getGameIntroText: String
+
+    /**
+     * @return All the values 1-boardSize which are legal moves
+     */
+    def getValidMoves: List[Int]
+
 }
 
 
