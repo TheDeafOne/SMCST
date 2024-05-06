@@ -1,7 +1,3 @@
-package TicTacToe
-
-import java.util.Scanner
-
 
 // Space values
 // 1   2    4
@@ -13,7 +9,7 @@ import java.util.Scanner
 // 4 5 6
 // 7 8 9
 
-class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val playerOneNext: Boolean = true) {
+class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val playerOneNext: Boolean = true) extends TwoPlayerGame{
 
     // The length of one row / column
     val boardLength = 3;
@@ -55,10 +51,17 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
      * @throws IllegalAccessError If the game is not over or a draw
      */
     def getWinner: Int = {
-        if(hasWinner.isDefined && hasWinner.get){
+        if(hasWinner.isEmpty || !hasWinner.get){
             throw IllegalAccessError("The game is not over or it's a draw")
         }
         if(!playerOneNext) then 1 else 2
+    }
+
+    /**
+     * @return true if player 1 is next else false
+     */
+    def getNextPlayer: Boolean = {
+        playerOneNext
     }
 
     /**
@@ -100,72 +103,27 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
         val outStr = boardTuples.map(x => if x._1 == '1' then "x" else (if x._2 == '1' then "O" else "-")).mkString
         outStr.reverse.grouped(boardLength).map(_+"\n").mkString
     }
-
-    /**
-     * @param str The base string
-     * @param desiredNumDigits The number of digits in the resulting string
-     * @return A binary string of length desiredNumDigits
-     */
-    private def padBinaryString(str: String, desiredNumDigits: Int) = ("0" * (desiredNumDigits - str.length)) + str
-
+    
     /**
      *
      * @param readableValue The human readable value of the board, ie. 1-boardSize
      * @return The base 2 value for that space
      */
     private def getBoardSpace(readableValue: Int): Int = Math.pow(2, readableValue - 1).toInt
-}
 
 
-
-//  Quick mockup for human entry
-@main
-def runHumanGame = {
-    val inputScanner = new Scanner(System.in)
-    var running = true
-    //      For a machine, use a recursive algorithm.
-    var gameBoard = TicTacToeBoard()
-
-    println("Playing TicTacToe: ")
-    println("Board spaces: ")
-    println("1 2 3")
-    println("4 5 6")
-    println("7 8 9")
-
-    while (running) {
-        try {
-            println(s"Current Board: Player ${if gameBoard.playerOneNext then 1 else 2}")
-            println(gameBoard.toString)
-            println("Enter your move on the board, or -1 to quit")
-            val input = inputScanner.nextInt()
-
-            if (input == -1){
-                running = false
-                println("Final Board State: ")
-                println(gameBoard.toString)
-                println("Quiting...")
-            }
-            else{
-                try{
-                    gameBoard = gameBoard.makeMove(input)
-                }
-                catch{
-                    case e => println(e.getMessage)
-                }
-                if(gameBoard.hasWinner.isDefined){
-                    if(gameBoard.hasWinner.get){
-                        println(s"Game Over! Player ${gameBoard.getWinner}")
-                    }
-                    else{
-                        println("Game Over. Draw!")
-                    }
-                    println("Final game state: ")
-                    println(gameBoard.toString)
-                    running = false
-                }
-            }
-        } catch {
-            case e => println("Invalid input, board spaces are numbers from 1-9")
-        }
+    def getGameIntroText = {
+        "Playing TicTacToe: \n" +
+        "Board spaces: \n" +
+        "1 2 3\n" +
+        "4 5 6\n" +
+        "7 8 9\n"
     }
 }
+
+/**
+ * @param str              The base string
+ * @param desiredNumDigits The number of digits in the resulting string
+ * @return A binary string of length desiredNumDigits
+ */
+private def padBinaryString(str: String, desiredNumDigits: Int) = ("0" * (desiredNumDigits - str.length)) + str
