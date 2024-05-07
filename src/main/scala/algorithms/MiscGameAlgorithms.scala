@@ -1,5 +1,8 @@
-import scala.math.random
+import games.{TicTacToeBoard, TwoPlayerGame}
 
+import scala.math.random
+import utils.padBinaryString
+import utils.getIntegerInput
 
 def humanMove(gameBoard: TwoPlayerGame): Int  = {
     println(s"Current Board: Player ${if gameBoard.getNextPlayer then 1 else 2}")
@@ -16,8 +19,8 @@ def randomMove(gameBoard: TwoPlayerGame): Int  = {
 
 /**
  * Greedy Implementation of a TicTacToe AI
- * @param heuristic the function which takes a TicTacToeBoard and scores it
- * @param gameBoard A TicTacToeBoard, If not will return -1 because it can't play another game
+ * @param heuristic the function which takes a games.TicTacToeBoard and scores it
+ * @param gameBoard A games.TicTacToeBoard, If not will return -1 because it can't play another game
  * @return the move the greedy algo thinks is best
  */
 def greedyTTTMove(heuristic: TicTacToeBoard => Int = getScoringTTTBHeuristic)(gameBoard: TwoPlayerGame): Int = {
@@ -34,8 +37,8 @@ def greedyTTTMove(heuristic: TicTacToeBoard => Int = getScoringTTTBHeuristic)(ga
 /**
  * Minimax Implementation of a TicTacToe AI
  * @param depth the depth which the AI will search
- * @param heuristic the function which takes a TicTacToeBoard and scores it
- * @param gameBoard A TicTacToeBoard, If not will return -1 because it can't play another game
+ * @param heuristic the function which takes a games.TicTacToeBoard and scores it
+ * @param gameBoard A games.TicTacToeBoard, If not will return -1 because it can't play another game
  * @return the move the algo thinks is best
  */
 def minimaxTTTMove(depth: Int, heuristic: TicTacToeBoard => Int = getScoringTTTBHeuristic)(gameBoard: TwoPlayerGame): Int = {
@@ -57,7 +60,7 @@ def minimaxTTTMove(depth: Int, heuristic: TicTacToeBoard => Int = getScoringTTTB
 
 /**
  * Scores the board based on how close to a 3 in a row it is for either player
- * @param gameBoard a TicTacToeBoard
+ * @param gameBoard a games.TicTacToeBoard
  * @return a Int representing how close it is to either player winning, More negative is more in favor of player 2, positive, player 1
  */
 

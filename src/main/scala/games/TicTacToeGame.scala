@@ -1,3 +1,5 @@
+package games
+import utils.padBinaryString
 
 // Space values
 // 1   2    4
@@ -120,10 +122,3 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
         "7 8 9\n"
     }
 }
-
-/**
- * @param str              The base string
- * @param desiredNumDigits The number of digits in the resulting string
- * @return A binary string of length desiredNumDigits
- */
-private def padBinaryString(str: String, desiredNumDigits: Int) = ("0" * (desiredNumDigits - str.length)) + str
