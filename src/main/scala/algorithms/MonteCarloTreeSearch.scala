@@ -1,41 +1,49 @@
+package algorithms
+
 import Players.Player
 
 import scala.annotation.tailrec
 
 @main def tester(): Unit = {
   val root = new Node(new ABGame(), null, null)
-  val move = monteCarloTreeSearch(root)
-  println(move)
+  val MCTS = new MonteCarloTreeSearch(root)
+  val (node, move) = MCTS.search(root)
+  println(move.x)
 }
 
-def monteCarloTreeSearch(root: Node): Move = {
-  // selection
-  var iterations = 0
-  val maxIters = 2
-  var current = root
-  while (iterations < maxIters) {
-    if (current.children.nonEmpty) {
-      current = current.children.maxBy(_.UCB1)
-    } else {
-      if (current.visits == 0) {
-        // rollout
-        val playerWon = current.rollout
-        current.backprop(playerWon)
+
+class MonteCarloTreeSearch(val root: Node) {
+  def search(root: Node): (Node, Move) = {
+    // selection
+    var iterations = 0
+    val maxIters = 2
+    var current = root
+    while (iterations < maxIters) {
+      if (current.children.nonEmpty) {
+        current = current.children.maxBy(_.UCB1)
       } else {
-        // expansion
-        val moves = current.state.getMoves
-        val move = moves((Math.random() * moves.size).toInt)
-        val newState = current.state.copy
-        newState.makeMove(move)
-        val newNode = new Node(newState, current, move)
-        current.children = current.children :+ newNode
-        current = newNode
+        if (current.visits == 0) {
+          // rollout
+          val playerWon = current.rollout
+          current.backprop(playerWon)
+        } else {
+          // expansion
+          val moves = current.state.getMoves
+          val move = moves((Math.random() * moves.size).toInt)
+          val newState = current.state.copy
+          newState.makeMove(move)
+          val newNode = new Node(newState, current, move)
+          current.children = current.children :+ newNode
+          current = newNode
+        }
       }
+      iterations += 1
     }
-    iterations += 1
+    val node = root.children.maxBy(n => n.wins/n.visits)
+    (node, node.move)
   }
-  root.children.maxBy(_.visits).move
 }
+
 
 object Players extends Enumeration {
   type Player = Value
