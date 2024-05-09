@@ -127,25 +127,25 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
 class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: TicTacToeBoard = new TicTacToeBoard()) extends State {
 
 
-    override def getMoves = {
-        board.getValidMoves
+    override def getMoves: List[Move] = {
+        board.getValidMoves.map(p => new Move(p / board.boardLength, p % board.boardLength))
     }
 
-    override def makeMove(move: Move) = {
-        board = board.makeMove(move)
+    override def makeMove(move: Move): Unit = {
+        board = board.makeMove(move.y * board.boardLength + move.x)
         currentPlayer = if(currentPlayer == Players.Player1) Players.Player2 else Players.Player1
     }
     
-    override def copy = {
+    override def copy: TicTacToeGameState = {
         new TicTacToeGameState(currentPlayer, new TicTacToeBoard(board.player1Pieces, board.player2Pieces, board.playerOneNext))
         
     }
     
-    override def hasWinner = {
+    override def hasWinner: Boolean = {
         board.hasWinner.getOrElse(false)
     }
     
-    override def getWinner = {
-        board.getWinner
+    override def getWinner: Player = {
+        if (board.getWinner == 1) Players.Player1 else Players.Player2
     }
 }
