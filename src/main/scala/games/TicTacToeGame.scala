@@ -27,9 +27,6 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
      * @return Option[Boolean]
      */
     def hasWinner: Option[Boolean] = {
-        if(player1Pieces + player2Pieces == getBoardSpace(boardSize + 1) - 1){
-            return Option(false)
-        }
 
         val horizontal = for(x <- 1 to boardLength) yield (x to boardSize by boardLength).map(getBoardSpace).sum
         val vertical = for (x <- 0 until boardLength) yield (1 + x*boardLength to boardLength + x*boardLength).map(getBoardSpace).sum
@@ -38,12 +35,16 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
         val backwardDiag = (boardLength to 1 by -1).map(x => x + (boardLength - x) * boardLength).map(getBoardSpace).sum
 
         val masks = (horizontal concat vertical).toList :+ forwardDiag :+ backwardDiag
-
         masks.foreach(mask => {
             if (((player1Pieces & mask) ^ mask) == 0 || ((player2Pieces & mask) ^ mask) == 0) {
                 return Some(true)
             }
         })
+
+        if (player1Pieces + player2Pieces == getBoardSpace(boardSize + 1) - 1) {
+            return Option(false)
+        }
+
         None
     }
 
@@ -130,7 +131,7 @@ class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: T
     override def getMoves: List[Move] = {
         val vm = board.getValidMoves
         //((i-1)//3+1), ((i-1)%3)+1
-        val moves = board.getValidMoves.map(p => new Move(((p-1) / board.boardLength) + 1, ((p - 1) % board.boardLength) + 1))
+        val moves = board.getValidMoves.map(p => new Move(((p-1) % board.boardLength) + 1, ((p - 1) / board.boardLength) + 1))
         moves
     }
 
@@ -146,6 +147,7 @@ class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: T
     }
     
     override def hasWinner: Boolean = {
+        println(board.hasWinner.getOrElse(false))
         board.hasWinner.getOrElse(false)
     }
     
