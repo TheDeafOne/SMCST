@@ -136,7 +136,7 @@ class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: T
 
     override def makeMove(move: Move): Unit = {
         println("current board: \n" + board)
-        board = board.makeMove(move.y * board.boardLength + move.x)
+        board = board.makeMove((move.y - 1)* board.boardLength + move.x)
         currentPlayer = if(currentPlayer == Players.Player1) Players.Player2 else Players.Player1
     }
     
