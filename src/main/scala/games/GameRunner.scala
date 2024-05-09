@@ -11,9 +11,13 @@ def run = {
   //    runGame(humanMove, randomMove, verbose = true, TicTacToeBoard())
   //    runGame(humanMove, greedyTTTMove(), verbose = true, TicTacToeBoard())
 //  runGame(humanMove, minimaxTTTMove(10), verbose = true, TicTacToeBoard())
-    timeRuns
+//    val result = (1 to 100).map(x => runGame(greedyTTTMove(), randomMove, verbose = false, TicTacToeBoard()))
+    val result = (1 to 100).map(x => runGame(minimaxTTTMove(10), randomMove, verbose = false, TicTacToeBoard()))
+//    val result = (1 to 100).map(x => runGame(randomMove, randomMove, verbose = false, TicTacToeBoard())).toList
+    println(s"Player 1 won: ${result.count(_==1)} and drawed: ${result.count(_==(-1))}")
 }
 
+@main
 def timeRuns = {
     println("Running Random: ")
     val outR = timeIt(runGame(randomMove, randomMove, verbose = false, TicTacToeBoard()))
