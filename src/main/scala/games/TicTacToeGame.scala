@@ -128,10 +128,14 @@ class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: T
 
 
     override def getMoves: List[Move] = {
-        board.getValidMoves.map(p => new Move(p / board.boardLength, p % board.boardLength))
+        val vm = board.getValidMoves
+        //((i-1)//3+1), ((i-1)%3)+1
+        val moves = board.getValidMoves.map(p => new Move(((p-1) / board.boardLength) + 1, ((p - 1) % board.boardLength) + 1))
+        moves
     }
 
     override def makeMove(move: Move): Unit = {
+        println("current board: \n" + board)
         board = board.makeMove(move.y * board.boardLength + move.x)
         currentPlayer = if(currentPlayer == Players.Player1) Players.Player2 else Players.Player1
     }
@@ -147,5 +151,9 @@ class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: T
     
     override def getWinner: Player = {
         if (board.getWinner == 1) Players.Player1 else Players.Player2
+    }
+
+    override def toString: String = {
+        board.toString
     }
 }

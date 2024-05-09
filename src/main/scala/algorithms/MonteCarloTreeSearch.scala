@@ -65,6 +65,8 @@ class Node(val state: State, val parent: Node, val move: Move) {
     while (!currentState.hasWinner) {
       val moves = currentState.getMoves
       val move = moves(rand.nextInt(moves.size))
+      println("board: \n" + currentState)
+      println("move: " + move)
       currentState.makeMove(move)
     }
     currentState.getWinner
