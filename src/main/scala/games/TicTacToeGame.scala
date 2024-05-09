@@ -147,12 +147,16 @@ class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: T
     }
     
     override def hasWinner: Boolean = {
-        println(board.hasWinner.getOrElse(false))
-        board.hasWinner.getOrElse(false)
+        board.hasWinner.isDefined
     }
     
     override def getWinner: Player = {
-        if (board.getWinner == 1) Players.Player1 else Players.Player2
+        if(board.hasWinner.isDefined && board.hasWinner.get){
+            if (board.getWinner == 1) Players.Player1 else Players.Player2
+        }
+        else{
+            Players.None
+        }
     }
 
     override def toString: String = {
