@@ -28,7 +28,6 @@ def getIntegerInput: Int = {
       } catch {
         case e => {
           inputScanner.nextLine()
-          println("Invalid Integer")
           getInput(scanner, false, num)
         }
       }

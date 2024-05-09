@@ -8,9 +8,6 @@ import utils.getIntegerInput
 import scala.collection.parallel.CollectionConverters.*
 
 def humanMove(gameBoard: TwoPlayerGame): Int  = {
-    println(s"Current Board: Player ${if gameBoard.getNextPlayer then 1 else 2}")
-    println(gameBoard.toString)
-    println(s"Enter your move on the board, or -1 to quit")
     getIntegerInput
 }
 

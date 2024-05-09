@@ -3,19 +3,11 @@ import games.{ABGame, TicTacToeGameState}
 
 @main def tester(): Unit = {
   val root = new Node(new TicTacToeGameState(), null, null)
-  val MCTS = new MonteCarloTreeSearch(root, 20)
-  val (node, move) = MCTS.search(root)
+  val MCTS = new MonteCarloTreeSearch(root, 20000)
   var current = root
-//  println("\n\ndisplay")
-//  while (!current.state.hasWinner) {
-//    println(current.state)
-//    println(current.state.currentPlayer)
-//    println(current.state.getMoves)
-//    println()
-//    current = current.children.maxBy(n => n.wins / n.visits)
-//  }
-//  println(current.state)
-//  println(current.state.currentPlayer)
-//  println(current.state.getMoves)
-//  println()
+  while (!current.state.hasWinner) {
+    val (node, move) = MCTS.search(current)
+    current = node
+    println(current.state)
+  }
 }

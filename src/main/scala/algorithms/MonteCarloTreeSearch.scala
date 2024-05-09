@@ -24,14 +24,16 @@ class MonteCarloTreeSearch(val root: Node, val maxIterations: Int = 10, val maxR
           (1 to maxRolloutsPerIteration).foreach(_ => current.backprop(current.rollout))
         } else {
           // expansion
-          println("expansion")
-          val moves = current.state.getMoves
-          val move = moves(rand.nextInt(moves.size))
-          val newState = current.state.copy
-          newState.makeMove(move)
-          val newNode = new Node(newState, current, move)
-          current.children = current.children :+ newNode
-          current = newNode
+          if (!current.state.hasWinner) {
+            val moves = current.state.getMoves
+            moves.foreach(move => {
+              val newState = current.state.copy
+              newState.makeMove(move)
+              current.children = new Node(newState, current, move) :: current.children
+            })
+          } else {
+            current = root
+          }
         }
       }
       iterations += 1
@@ -63,8 +65,6 @@ class Node(val state: State, val parent: Node, val move: Move) {
     while (!currentState.hasWinner) {
       val moves = currentState.getMoves
       val move = moves(rand.nextInt(moves.size))
-      println("board: \n" + currentState)
-      println("move: " + move)
       currentState.makeMove(move)
     }
     currentState.getWinner
