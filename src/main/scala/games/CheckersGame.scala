@@ -152,7 +152,7 @@ class CheckersGame(var currentPlayer: Player=Players.Player1) extends State {
     game
   }
 
-  override def toString: String = board.mkString(" ")
+  override def toString: String = board.map(row => row.map(_.toString).mkString(" ")).mkString("\n")
 }
 
 
