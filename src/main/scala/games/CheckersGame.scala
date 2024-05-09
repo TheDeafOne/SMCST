@@ -75,10 +75,8 @@ class CheckersGame(var currentPlayer: Player=Players.Player1) extends State {
   }
 
   override def makeMove(move: Move): Unit = {
-    println(move)
 
     if (Math.abs(move.currX - move.x) == 2) {
-      println("here")
       val dx = move.currX + (move.x - move.currX)/2
       val dy = move.currY + (move.y - move.currY)/2
       board = updateSpot(move.currX, move.currY, Players.None)
@@ -86,16 +84,32 @@ class CheckersGame(var currentPlayer: Player=Players.Player1) extends State {
       board = updateSpot(move.x, move.y, currentPlayer)
       val mv = getMove(move.x, move.y)
       val newMoves = mv.filter(move => Math.abs(move.currX - move.x) == 2)
-      println("new moves")
-      println(newMoves)
       if (newMoves.nonEmpty) {
         makeMove(newMoves.head)
       } else {
+        if (move.x == 7 && currentPlayer == Player1) {
+          val piece = getPiece(move.x, move.y)
+          piece.common = false
+          board = board.updated(move.x, board(move.x).updated(move.y, piece))
+        } else if (move.x == 0 && currentPlayer == Player2) {
+          val piece = getPiece(move.x, move.y)
+          piece.common = false
+          board = board.updated(move.x, board(move.x).updated(move.y, piece))
+        }
         currentPlayer = oppositePlayer
       }
     } else {
       board = updateSpot(move.currX, move.currY, Players.None)
       board = updateSpot(move.x, move.y, currentPlayer)
+      if (move.x == 7 && currentPlayer == Player1) {
+        val piece = getPiece(move.x, move.y)
+        piece.common = false
+        board = board.updated(move.x, board(move.x).updated(move.y, piece))
+      } else if (move.x == 0 && currentPlayer == Player2) {
+        val piece = getPiece(move.x, move.y)
+        piece.common = false
+        board = board.updated(move.x, board(move.x).updated(move.y, piece))
+      }
       currentPlayer = oppositePlayer
     }
   }
@@ -106,11 +120,27 @@ class CheckersGame(var currentPlayer: Player=Players.Player1) extends State {
   override def hasWinner: Boolean = {
     // eliminate squares that are not empty and leaving squares that have pieces
     val distinctPieces = board.flatten.filter(_ != Players.None).distinct
+    val board_copy = copy
+    if (board_copy.getMoves.isEmpty) {
+      return true
+    }
+    board_copy.currentPlayer = oppositePlayer
+    if (board_copy.getMoves.isEmpty) {
+      return true
+    }
     distinctPieces.size == 1 || distinctPieces.isEmpty
 
   }
 
   override def getWinner: Player = {
+    val board_copy = copy
+    if (board_copy.getMoves.isEmpty) {
+      return board_copy.currentPlayer
+    }
+    board_copy.currentPlayer = oppositePlayer
+    if (board_copy.getMoves.isEmpty) {
+      return board_copy.currentPlayer
+    }
     if(board.flatten.count(_ == Players.Player1) == 0) Players.Player2
     else Players.Player1
 

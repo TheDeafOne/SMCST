@@ -67,6 +67,7 @@ class Node(val state: State, val parent: Node, val move: Move) {
     val currentState = state.copy
     while (!currentState.hasWinner) {
       val moves = currentState.getMoves
+
       val move = moves(rand.nextInt(moves.size))
       currentState.makeMove(move)
     }

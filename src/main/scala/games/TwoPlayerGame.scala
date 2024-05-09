@@ -49,21 +49,33 @@ trait TwoPlayerGame {
 //  type Player = Value
 //  val None, Player1, Player2 = Value
 //}
+//trait Player {
+//  def common: Boolean
+//}
+//object Players {
+//  case object None extends Player {
+//    val common: Boolean = true
+//  }
+//
+//  case object Player1 extends Player {
+//    val common: Boolean = true
+//  }
+//
+//  case object Player2 extends Player {
+//    val common: Boolean = true
+//  }
+//}
 trait Player {
-  def common: Boolean
+  var common: Boolean
+}
+
+class MutablePlayer(var common: Boolean = false, val name: String = "") extends Player {
+  override def toString: String = name
 }
 object Players {
-  case object None extends Player {
-    val common: Boolean = true
-  }
-
-  case object Player1 extends Player {
-    val common: Boolean = true
-  }
-
-  case object Player2 extends Player {
-    val common: Boolean = true
-  }
+  val None = new MutablePlayer(true, "None")
+  val Player1 = new MutablePlayer(true, "Player1")
+  val Player2 = new MutablePlayer(true, "Player2")
 }
 
 class Move(val x: Int, val y: Int, val currX: Int = 0, val currY: Int = 0) {
