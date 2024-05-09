@@ -1,5 +1,5 @@
 package games
-import games.Players.Player
+import games.Players
 
 class ABGame(var board: List[Player] = List(Players.Player1, Players.None, Players.None, Players.Player2), var currentPlayer: Player=Players.Player1) extends State {
   override def getMoves: List[Move] = {

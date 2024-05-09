@@ -1,6 +1,6 @@
 package games
 
-import games.Players.Player
+import games.Player
 
 trait TwoPlayerGame {
   /**
@@ -45,15 +45,34 @@ trait TwoPlayerGame {
 }
 
 
-object Players extends Enumeration {
-  type Player = Value
-  val None, Player1, Player2 = Value
+//object Players extends Enumeration {
+//  type Player = Value
+//  val None, Player1, Player2 = Value
+//}
+trait Player {
+  def common: Boolean
+}
+object Players {
+  case object None extends Player {
+    val common: Boolean = true
+  }
+
+  case object Player1 extends Player {
+    val common: Boolean = true
+  }
+
+  case object Player2 extends Player {
+    val common: Boolean = true
+  }
 }
 
-class Move(val x: Int, val y: Int) {
-  override def toString: String = s"($x, $y)"
+class Move(val x: Int, val y: Int, val currX: Int = 0, val currY: Int = 0) {
+  override def toString: String = s"($x, $y) ($currX, $currY)"
 }
 
+//class CheckersMove(override val x: Int, override val y: Int, val currX: Int, val currY: Int) extends Move(x, y) {
+//  override def toString: String = s"($x, $y) currPos:($currX, $currY)"
+//}
 
 
 trait State {

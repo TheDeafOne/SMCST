@@ -1,5 +1,5 @@
 package games
-import games.Players.Player
+import games.Players
 import utils.padBinaryString
 
 // Space values
