@@ -17,11 +17,13 @@ class MonteCarloTreeSearch(val root: Node, val maxIterations: Int = 10, val maxR
     var current = root
     while (iterations < maxIterations) {
       if (current.children.nonEmpty) {
+        // exploration
         current = current.children.maxBy(_.UCB1)
       } else {
         if (current.visits == 0) {
           // rollout
           (1 to maxRolloutsPerIteration).foreach(_ => current.backprop(current.rollout))
+          current = root
         } else {
           // expansion
           if (!current.state.hasWinner) {
@@ -31,14 +33,15 @@ class MonteCarloTreeSearch(val root: Node, val maxIterations: Int = 10, val maxR
               newState.makeMove(move)
               current.children = new Node(newState, current, move) :: current.children
             })
-          } else {
-            current = root
           }
         }
       }
+
       iterations += 1
     }
-    val node = root.children.maxBy(n => n.wins/n.visits)
+
+
+    val node = root.children.maxBy(n => 1 - n.wins/n.visits)
     (node, node.move)
   }
 }
