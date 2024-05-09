@@ -50,6 +50,7 @@ class MonteCarloTreeSearch(val root: Node, val maxIterations: Int = 10, val maxR
 
 
     val node = root.children.maxBy(n => 1 - n.wins/n.visits)
+    //println(root.children)
     (node, node.move)
   }
 }
@@ -116,5 +117,9 @@ class Node(val state: State, val parent: Node, val move: Move) {
     }
     currentState.getWinner
 
+  }
+
+  override def toString: String = {
+    s"[(${wins}: ${visits}) Value: ${wins/visits} - Move: (${move.x},${move.y})]"
   }
 }
