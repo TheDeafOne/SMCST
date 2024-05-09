@@ -54,7 +54,6 @@ class Move(val x: Int, val y: Int) {
   override def toString: String = s"($x, $y)"
 }
 
-trait BitBoard(val board: Long = 0) extends State
 
 
 trait State {
@@ -63,9 +62,11 @@ trait State {
 
   def makeMove(move: Move): Unit
 
-  def isTerminal: Boolean
+  def hasWinner: Boolean
 
   def getWinner: Player
 
   def copy: State
 }
+
+trait BitBoard(val board: Long = 0) extends State

@@ -62,7 +62,7 @@ class Node(val state: State, val parent: Node, val move: Move) {
 
   def rollout: Player = {
     val currentState = state.copy
-    while (!currentState.isTerminal) {
+    while (!currentState.hasWinner) {
       val moves = currentState.getMoves
       val move = moves(rand.nextInt(moves.size))
       currentState.makeMove(move)

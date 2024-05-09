@@ -1,5 +1,5 @@
+package games
 import games.Players.Player
-import games.{Move, Players, State}
 
 class ABGame(var board: List[Player] = List(Players.Player1, Players.None, Players.None, Players.Player2), var currentPlayer: Player=Players.Player1) extends State {
   override def getMoves: List[Move] = {
@@ -12,13 +12,10 @@ class ABGame(var board: List[Player] = List(Players.Player1, Players.None, Playe
   override def makeMove(move: Move): Unit = {
     board = board.updated(board.indexOf(currentPlayer), Players.None)
     board = board.updated(move.x, currentPlayer)
-    println("make move board: " + board)
-    println("is player1 == " + (currentPlayer == Players.Player1))
     currentPlayer = if (currentPlayer == Players.Player1) Players.Player2 else Players.Player1
-    println(currentPlayer)
   }
 
-  override def isTerminal: Boolean = {
+  override def hasWinner: Boolean = {
     board.indexOf(Players.Player1) == board.length - 1 || board.indexOf(Players.Player2) == 0
   }
 

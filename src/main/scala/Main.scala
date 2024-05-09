@@ -1,4 +1,5 @@
 import algorithms.{MonteCarloTreeSearch, Node}
+import games.ABGame
 
 @main def tester(): Unit = {
   val root = new Node(new ABGame(), null, null)
@@ -6,7 +7,7 @@ import algorithms.{MonteCarloTreeSearch, Node}
   val (node, move) = MCTS.search(root)
   var current = root
   println("\n\ndisplay")
-  while (!current.state.isTerminal) {
+  while (!current.state.hasWinner) {
     println(current.state)
     println(current.state.currentPlayer)
     println(current.state.getMoves)

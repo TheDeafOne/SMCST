@@ -1,4 +1,5 @@
 package games
+import games.Players.Player
 import utils.padBinaryString
 
 // Space values
@@ -120,5 +121,31 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
         "1 2 3\n" +
         "4 5 6\n" +
         "7 8 9\n"
+    }
+}
+
+class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: TicTacToeBoard = new TicTacToeBoard()) extends State {
+
+
+    override def getMoves = {
+        board.getValidMoves
+    }
+
+    override def makeMove(move: Move) = {
+        board = board.makeMove(move)
+        currentPlayer = if(currentPlayer == Players.Player1) Players.Player2 else Players.Player1
+    }
+    
+    override def copy = {
+        new TicTacToeGameState(currentPlayer, new TicTacToeBoard(board.player1Pieces, board.player2Pieces, board.playerOneNext))
+        
+    }
+    
+    override def hasWinner = {
+        board.hasWinner.getOrElse(false)
+    }
+    
+    override def getWinner = {
+        board.getWinner
     }
 }
