@@ -10,7 +10,7 @@ val RANDOM_SEED = 42
 val rand = new Random(RANDOM_SEED)
 
 
-class MonteCarloTreeSearch(val root: Node, val maxIterations: Int = 10) {
+class MonteCarloTreeSearch(val root: Node, val maxIterations: Int = 10, val maxRolloutsPerIteration: Int = 10) {
   def search(root: Node = root): (Node, Move) = {
     // selection
     var iterations = 0
@@ -21,9 +21,7 @@ class MonteCarloTreeSearch(val root: Node, val maxIterations: Int = 10) {
       } else {
         if (current.visits == 0) {
           // rollout
-          println("rollout")
-          val playerWon = current.rollout
-          current.backprop(playerWon)
+          (1 to maxRolloutsPerIteration).foreach(_ => current.backprop(current.rollout))
         } else {
           // expansion
           println("expansion")
