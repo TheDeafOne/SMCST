@@ -1,14 +1,18 @@
 import algorithms.{MonteCarloTreeSearch, Node}
-import games.{ABGame, TicTacToeGameState}
+import games.TicTacToeGameState
+import utils.timeIt
 
-@main def tester(): Unit = {
+def tester(): Unit = {
   val root = new Node(new TicTacToeGameState(), null, null)
   val MCTS = new MonteCarloTreeSearch(root, 1000)
   var current = root
   while (!current.state.hasWinner) {
     val (node, move) = MCTS.search(current)
-    println(s"Children: ${current.children.map(c => s"${c.move} - ${c.wins/c.visits}").mkString(" ")}")
     current = node
-    println(current.state)
+//    println(current.state)
   }
+}
+
+@main def main(): Unit = {
+  println(timeIt(tester()))
 }

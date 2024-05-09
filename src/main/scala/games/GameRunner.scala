@@ -2,7 +2,7 @@ package games
 
 import java.util.Scanner
 import scala.util.control.Breaks.break
-import algorithms.{humanMove, minimaxTTTMove, greedyTTTMove, randomMove, parallelMinimaxTTTMove, parallelGreedyTTTMove, getSimpleTTTBHeuristic}
+import algorithms.{MCTSMove, getSimpleTTTBHeuristic, greedyTTTMove, humanMove, minimaxTTTMove, parallelGreedyTTTMove, parallelMinimaxTTTMove, randomMove}
 import utils.timeIt
 
 @main
@@ -19,30 +19,33 @@ def run = {
 
 @main
 def timeRuns = {
-    println("Running Random: ")
-    val outR = timeIt(runGame(randomMove, randomMove, verbose = false, TicTacToeBoard()))
-    println(s"Ran in ${outR._1}ms\n")
-
-    println("Running Greedy: ")
-    val outG = timeIt(runGame(minimaxTTTMove(10), minimaxTTTMove(10), verbose = false, TicTacToeBoard()))
-    println(s"Ran in ${outG._1}ms\n")
-    println("Running ParGreedy: ")
-    val outPG = timeIt(runGame(parallelMinimaxTTTMove(10), parallelMinimaxTTTMove(10), verbose = false, TicTacToeBoard()))
-    println(s"Ran in ${outPG._1}ms\n")
-
-    println("Running SimpleMinimax: ")
-    val outSMM = timeIt(runGame(minimaxTTTMove(10, getSimpleTTTBHeuristic), minimaxTTTMove(10, getSimpleTTTBHeuristic), verbose = false, TicTacToeBoard()))
-    println(s"Ran in ${outSMM._1}ms\n")
-    println("Running SimpleParallelMinimax: ")
-    val outPSMM = timeIt(runGame(parallelMinimaxTTTMove(10, getSimpleTTTBHeuristic), parallelMinimaxTTTMove(10, getSimpleTTTBHeuristic), verbose = false, TicTacToeBoard()))
-    println(s"Ran in ${outPSMM._1}ms\n")
-
-    println("Running Minimax: ")
-    val outMM = timeIt(runGame(minimaxTTTMove(10), minimaxTTTMove(10), verbose = false, TicTacToeBoard()))
-    println(s"Ran in ${outMM._1}ms\n")
-    println("Running ParMinimax: ")
-    val outPMM = timeIt(runGame(parallelMinimaxTTTMove(10), parallelMinimaxTTTMove(10), verbose = false, TicTacToeBoard()))
-    println(s"Ran in ${outPMM._1}ms\n")
+  println("random v mcts")
+  val b = new TicTacToeBoard()
+  val outC = timeIt(runGame(randomMove, MCTSMove(), verbose = false, TicTacToeBoard()))
+//    println("Running Random: ")
+//    val outR = timeIt(runGame(randomMove, randomMove, verbose = false, TicTacToeBoard()))
+//    println(s"Ran in ${outR._1}ms\n")
+//
+//    println("Running Greedy: ")
+//    val outG = timeIt(runGame(minimaxTTTMove(10), minimaxTTTMove(10), verbose = false, TicTacToeBoard()))
+//    println(s"Ran in ${outG._1}ms\n")
+//    println("Running ParGreedy: ")
+//    val outPG = timeIt(runGame(parallelMinimaxTTTMove(10), parallelMinimaxTTTMove(10), verbose = false, TicTacToeBoard()))
+//    println(s"Ran in ${outPG._1}ms\n")
+//
+//    println("Running SimpleMinimax: ")
+//    val outSMM = timeIt(runGame(minimaxTTTMove(10, getSimpleTTTBHeuristic), minimaxTTTMove(10, getSimpleTTTBHeuristic), verbose = false, TicTacToeBoard()))
+//    println(s"Ran in ${outSMM._1}ms\n")
+//    println("Running SimpleParallelMinimax: ")
+//    val outPSMM = timeIt(runGame(parallelMinimaxTTTMove(10, getSimpleTTTBHeuristic), parallelMinimaxTTTMove(10, getSimpleTTTBHeuristic), verbose = false, TicTacToeBoard()))
+//    println(s"Ran in ${outPSMM._1}ms\n")
+//
+//    println("Running Minimax: ")
+//    val outMM = timeIt(runGame(minimaxTTTMove(10), minimaxTTTMove(10), verbose = false, TicTacToeBoard()))
+//    println(s"Ran in ${outMM._1}ms\n")
+//    println("Running ParMinimax: ")
+//    val outPMM = timeIt(runGame(parallelMinimaxTTTMove(10), parallelMinimaxTTTMove(10), verbose = false, TicTacToeBoard()))
+//    println(s"Ran in ${outPMM._1}ms\n")
 }
 
 

@@ -10,11 +10,14 @@ import scala.collection.parallel.CollectionConverters.*
 val RANDOM_SEED = 42
 val rand = new Random(RANDOM_SEED)
 
-class MCTSMove(val board: TicTacToeBoard) {
-  val state = new TicTacToeGameState(Players.Player1, board)
-  val root = new Node(state, null, null)
-  val mcts = new MonteCarloTreeSearch(root, 2000, 5)
-  val move = mcts.search(root)
+def MCTSMove(): TwoPlayerGame => Int = {
+   b => {
+     val state = new TicTacToeGameState(Players.Player1, b.asInstanceOf)
+     val root = new Node(state, null, null)
+     val mcts = new MonteCarloTreeSearch(root, 2000, 5)
+     val (node, move) = mcts.search(root)
+     (move.x - 1) * 3 + move.y
+   }
 }
 
 
