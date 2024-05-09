@@ -90,7 +90,7 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
             throw IllegalArgumentException("Invalid move, space already occupied")
         }
         if(hasWinner.isDefined){
-            throw IllegalStateException("Cannot play, Game already over")
+            throw IllegalStateException(s"Cannot play, Game already over. ${if(!hasWinner.get) then "It's a draw" else "A player won!"}")
         }
 
         val boardSpace = getBoardSpace(space)
