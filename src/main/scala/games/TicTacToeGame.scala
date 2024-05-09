@@ -27,9 +27,6 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
      * @return Option[Boolean]
      */
     def hasWinner: Option[Boolean] = {
-        if(player1Pieces + player2Pieces == getBoardSpace(boardSize + 1) - 1){
-            return Option(false)
-        }
 
         val horizontal = for(x <- 1 to boardLength) yield (x to boardSize by boardLength).map(getBoardSpace).sum
         val vertical = for (x <- 0 until boardLength) yield (1 + x*boardLength to boardLength + x*boardLength).map(getBoardSpace).sum
@@ -38,12 +35,16 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
         val backwardDiag = (boardLength to 1 by -1).map(x => x + (boardLength - x) * boardLength).map(getBoardSpace).sum
 
         val masks = (horizontal concat vertical).toList :+ forwardDiag :+ backwardDiag
-
         masks.foreach(mask => {
             if (((player1Pieces & mask) ^ mask) == 0 || ((player2Pieces & mask) ^ mask) == 0) {
                 return Some(true)
             }
         })
+
+        if (player1Pieces + player2Pieces == getBoardSpace(boardSize + 1) - 1) {
+            return Option(false)
+        }
+
         None
     }
 
@@ -89,7 +90,7 @@ class TicTacToeBoard(val player1Pieces: Int = 0, val player2Pieces: Int = 0, val
             throw IllegalArgumentException("Invalid move, space already occupied")
         }
         if(hasWinner.isDefined){
-            throw IllegalStateException("Cannot play, Game already over")
+            throw IllegalStateException(s"Cannot play, Game already over. ${if(!hasWinner.get) then "It's a draw" else "A player won!"}")
         }
 
         val boardSpace = getBoardSpace(space)
@@ -128,11 +129,14 @@ class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: T
 
 
     override def getMoves: List[Move] = {
-        board.getValidMoves.map(p => new Move(p / board.boardLength, p % board.boardLength))
+        val vm = board.getValidMoves
+        //((i-1)//3+1), ((i-1)%3)+1
+        val moves = board.getValidMoves.map(p => new Move(((p-1) % board.boardLength) + 1, ((p - 1) / board.boardLength) + 1))
+        moves
     }
 
     override def makeMove(move: Move): Unit = {
-        board = board.makeMove(move.y * board.boardLength + move.x)
+        board = board.makeMove((move.y - 1)* board.boardLength + move.x)
         currentPlayer = if(currentPlayer == Players.Player1) Players.Player2 else Players.Player1
     }
     
@@ -142,10 +146,19 @@ class TicTacToeGameState(var currentPlayer: Player=Players.Player1, var board: T
     }
     
     override def hasWinner: Boolean = {
-        board.hasWinner.getOrElse(false)
+        board.hasWinner.isDefined
     }
     
     override def getWinner: Player = {
-        if (board.getWinner == 1) Players.Player1 else Players.Player2
+        if(board.hasWinner.isDefined && board.hasWinner.get){
+            if (board.getWinner == 1) Players.Player1 else Players.Player2
+        }
+        else{
+            Players.None
+        }
+    }
+
+    override def toString: String = {
+        board.toString
     }
 }

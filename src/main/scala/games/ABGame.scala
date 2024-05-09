@@ -27,7 +27,7 @@ class ABGame(var board: List[Player] = List(Players.Player1, Players.None, Playe
     }
   }
 
-  def copy: State = new ABGame(board, currentPlayer)
+  override def copy: State = new ABGame(board, currentPlayer)
 
   override def toString: String = board.mkString(" ")
 }
