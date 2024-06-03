@@ -1,10 +1,9 @@
 package games
 
-import games.Players.Player
-
-object Players extends Enumeration {
-  type Player = Value
-  val None: Players.Value = Value
+enum Player(val value: Int) {
+  case None extends Player(0)
+  case PlayerOne extends Player(1)
+  case PlayerTwo extends Player(2)
 }
 
 class Move(val x: Int, val y: Int) {

@@ -1,7 +1,7 @@
 package games
 import games.Players.Player
 
-object ABGamePlayers extends Player {
+object ABGamePlayers extends  {
   val A, B = Value
 }
 
