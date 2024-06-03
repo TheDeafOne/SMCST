@@ -1,6 +1,10 @@
 package games
 import games.Players.Player
 
+object ABGamePlayers extends Player {
+  val A, B = Value
+}
+
 class ABGame(var board: List[Player] = List(Players.Player1, Players.None, Players.None, Players.Player2), var currentPlayer: Player=Players.Player1) extends State {
   override def getMoves: List[Move] = {
     val playerIndex = board.indexOf(currentPlayer)
