@@ -14,7 +14,7 @@ trait State {
   var currentPlayer: Players
   def getMoves: List[Move]
 
-  def makeMove(move: Move): Unit
+  def makeMove(move: Move): State
 
   def hasWinner: Boolean
 
