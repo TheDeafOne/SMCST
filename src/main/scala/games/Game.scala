@@ -1,9 +1,9 @@
 package games
 
-enum Player(val value: Int) {
-  case None extends Player(0)
-  case PlayerOne extends Player(1)
-  case PlayerTwo extends Player(2)
+enum Players(val value: Int) {
+  case None extends Players(0)
+  case P1 extends Players(1)
+  case P2 extends Players(2)
 }
 
 class Move(val x: Int, val y: Int) {
@@ -11,14 +11,14 @@ class Move(val x: Int, val y: Int) {
 }
 
 trait State {
-  var currentPlayer: Player
+  var currentPlayer: Players
   def getMoves: List[Move]
 
   def makeMove(move: Move): Unit
 
   def hasWinner: Boolean
 
-  def winner: Player
+  def winner: Players
 
   def copy: State
 }
