@@ -2,7 +2,7 @@ package games
 import games.Players
 
 class ABGame(
-  var board: List[Players] = List(Players.P1, Players.None, Players.None, Players.P2), 
+  var board: List[Players] = List(Players.P1, Players.None, Players.None, Players.P2),
   var currentPlayer: Players=Players.P1
 ) extends State {
   override def getMoves: List[Move] = {
@@ -18,7 +18,7 @@ class ABGame(
       case _ => playerIndex + 2
     }
     List(
-      new Move(leftIndex, 0), 
+      new Move(leftIndex, 0),
       new Move(rightIndex, 0)
     ).filter(m => m.x >= 0 && m.x < board.size)
   }
@@ -27,9 +27,9 @@ class ABGame(
     // return a new state with the given move applied
     new ABGame(
       board.updated(
-        board.indexOf(currentPlayer), 
+        board.indexOf(currentPlayer),
         Players.None
-      ).updated(move.x, currentPlayer), 
+      ).updated(move.x, currentPlayer),
       if (currentPlayer == Players.P1) Players.P2 else Players.P1
     )
   }
