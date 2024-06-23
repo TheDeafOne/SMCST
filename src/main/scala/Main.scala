@@ -1,15 +1,15 @@
 import algorithms.{MonteCarloTreeSearch, Node}
-import games.TicTacToeGameState
+import games.{ABGame, TicTacToeGameState}
 import utils.timeIt
 
 def tester(): Unit = {
-  val root = new Node(new TicTacToeGameState(), null, null)
-  val MCTS = new MonteCarloTreeSearch(root, 1000)
+  val root = new Node(new ABGame(), null, null)
+  val MCTS = new MonteCarloTreeSearch(root, 1000, 100)
   var current = root
   while (!current.state.hasWinner) {
     val (node, move) = MCTS.search(current)
     current = node
-//    println(current.state)
+    println(current.state)
   }
 }
 

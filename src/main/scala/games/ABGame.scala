@@ -2,23 +2,34 @@ package games
 import games.Players
 
 class ABGame(
-              var board: List[Players] = List(Players.P1, Players.None, Players.None, Players.P2), 
-              var currentPlayer: Players=Players.P1
-            ) extends State {
+  var board: List[Players] = List(Players.P1, Players.None, Players.None, Players.P2), 
+  var currentPlayer: Players=Players.P1
+) extends State {
   override def getMoves: List[Move] = {
     val playerIndex = board.indexOf(currentPlayer)
-    val leftIndex = if playerIndex == 0 then -1 
-      else if board(playerIndex - 1) == Players.None then playerIndex - 1 
-      else playerIndex - 2
-    val rightIndex = if playerIndex == board.length - 1 then -1 
-      else if board(playerIndex + 1) == Players.None then playerIndex + 1 
-      else playerIndex + 2
-    List(new Move(leftIndex, 0), new Move(rightIndex, 0)).filter(m => m.x >= 0 && m.x < board.size)
+    val leftIndex = playerIndex match {
+      case 0 => -1
+      case _ if board(playerIndex - 1) == Players.None => playerIndex - 1
+      case _ => playerIndex - 2
+    }
+    val rightIndex = playerIndex match {
+      case i if i == board.length - 1 => -1
+      case _ if board(playerIndex + 1) == Players.None => playerIndex + 1
+      case _ => playerIndex + 2
+    }
+    List(
+      new Move(leftIndex, 0), 
+      new Move(rightIndex, 0)
+    ).filter(m => m.x >= 0 && m.x < board.size)
   }
 
   override def makeMove(move: Move): State = {
+    // return a new state with the given move applied
     new ABGame(
-      board.updated(board.indexOf(currentPlayer), Players.None).updated(move.x, currentPlayer), 
+      board.updated(
+        board.indexOf(currentPlayer), 
+        Players.None
+      ).updated(move.x, currentPlayer), 
       if (currentPlayer == Players.P1) Players.P2 else Players.P1
     )
   }
