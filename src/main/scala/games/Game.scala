@@ -10,6 +10,16 @@ class Move(val x: Int, val y: Int) {
   override def toString: String = s"($x, $y)"
 }
 
+trait Game {
+  trait GameState extends State
+
+  val initialState: State
+
+  val info: String
+
+  def display(state: GameState): Unit
+}
+
 trait State {
   var currentPlayer: Players
   def getMoves: List[Move]
@@ -19,6 +29,4 @@ trait State {
   def hasWinner: Boolean
 
   def winner: Players
-
-  def copy: State
 }
