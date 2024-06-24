@@ -10,14 +10,14 @@ class Move(val x: Int, val y: Int) {
   override def toString: String = s"($x, $y)"
 }
 
-trait Game {
-  trait GameState extends State
+class GameInfo(val name: String, val description: String)
 
+trait Game {
   val initialState: State
 
-  val info: String
+  val info: GameInfo
 
-  def display(state: GameState): Unit
+  def display(state: State): Unit
 }
 
 trait State {

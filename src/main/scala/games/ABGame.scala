@@ -1,7 +1,22 @@
 package games
 import games.Players
 
-class ABGame(
+
+
+class ABGame extends Game {
+  override val initialState = new ABState()
+  val info = new GameInfo(
+    "AB",
+    "A simple game where two players move a token left or right"
+  )
+
+  override def display(state: State): Unit = {
+    //TODO: print the board so its pretty
+    println(state)
+  }
+}
+
+class ABState(
   var board: List[Players] = List(Players.P1, Players.None, Players.None, Players.P2),
   var currentPlayer: Players=Players.P1
 ) extends State {
@@ -25,7 +40,7 @@ class ABGame(
 
   override def makeMove(move: Move): State = {
     // return a new state with the given move applied
-    new ABGame(
+    new ABState(
       board.updated(
         board.indexOf(currentPlayer),
         Players.None
@@ -45,8 +60,6 @@ class ABGame(
       case _ => Players.None
     }
   }
-
-  override def copy: State = new ABGame(board, currentPlayer)
 
   override def toString: String = board.mkString(" ")
 }
