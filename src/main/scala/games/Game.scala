@@ -12,6 +12,8 @@ class Move(val x: Int, val y: Int) {
 
 class GameInfo(val name: String, val description: String)
 
+class Board(val dimensions: List[Int])
+
 trait Game {
   val initialState: State
 

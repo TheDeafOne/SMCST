@@ -7,17 +7,21 @@ class ABGame extends Game {
   override val initialState = new ABState()
   val info = new GameInfo(
     "AB",
-    "A simple game where two players move a token left or right"
+    """A simple game where two players move a token left or right on a 1d vector.
+    Players can move their token one space to the left or right if the adjacent space is empty, 
+    or two spaces to the left or right if the adjacent space is occupied by another player
+    Players cannot move their token off the board or onto a space occupied by the other player.
+    Players take turns moving their token.
+    The first player to move their token to the other side wins.""",
   )
 
   override def display(state: State): Unit = {
-    //TODO: print the board so its pretty
-    println(state)
+    println(state.mkString("|"))
   }
 }
 
 class ABState(
-  var board: List[Players] = List(Players.P1, Players.None, Players.None, Players.P2),
+  var board: List[Players],
   var currentPlayer: Players=Players.P1
 ) extends State {
   override def getMoves: List[Move] = {
