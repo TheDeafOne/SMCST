@@ -12,7 +12,15 @@ class Move(val x: Int, val y: Int) {
 
 class GameInfo(val name: String, val description: String)
 
-class Board(val dimensions: List[Int])
+trait Board(val dimensions: List[Int])
+
+trait DBoard extends Board {
+  val board: Array[Any]
+
+  def get(nVector: List[Int]): Players
+
+  def set(nVector: List[Int], player: Players): Unit
+}
 
 trait Game {
   val initialState: State
