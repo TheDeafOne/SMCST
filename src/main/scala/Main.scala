@@ -1,12 +1,13 @@
 import algorithms.{MonteCarloTreeSearch, Node}
-import games.{ABState}
+import games.ABGame
 import utils.timeIt
 
 def tester(): Unit = {
   println("starting")
-  val root = new Node(new ABState(), null, null)
+  val abGame = new ABGame()
+  val root = new Node(abGame.initialState, null, null)
   println("generating MCTS")
-  val MCTS = new MonteCarloTreeSearch(root, 1000, 100000)
+  val MCTS = new MonteCarloTreeSearch(root, 1000, 1000)
   var current = root
   while (!current.state.hasWinner) {
     println("searching tree...")

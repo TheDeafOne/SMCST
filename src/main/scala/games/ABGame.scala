@@ -1,10 +1,9 @@
 package games
-import games.Players
-
 
 
 class ABGame extends Game {
-  override val initialState = new ABState()
+  override val initialState = new ABState(List.fill(5)(Players.None).updated(0, Players.P1).updated(4, Players.P2))
+  var state: State = initialState
   val info = new GameInfo(
     "AB",
     """A simple game where two players move a token left or right on a 1d vector.
@@ -15,8 +14,8 @@ class ABGame extends Game {
     The first player to move their token to the other side wins.""",
   )
 
-  override def display(state: State): Unit = {
-    println(state.mkString("|"))
+  override def display: Unit = {
+    println(state) //TODO: make this better
   }
 }
 
